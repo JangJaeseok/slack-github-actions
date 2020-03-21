@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
       - name: get commit message
+        uses: actions/checkout@v2      
         run: echo ::set-env name=commitmsg::$(git log --format=%B -n 1 ${{ github.event.after }})
       - env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -17,7 +17,7 @@ jobs:
           #SLACK_AVATAR: repository # Optional. can be (repository, sender, an URL) (defaults to webhook app avatar)
           REPOSITORY_URL: ${{ github.repositoryUrl }}
           COMMIT_ID: ${{ github.sha }}
-          COMMIT_LOG: ${{ }}
+          COMMIT_LOG: ${{ commitmsg }}
       - uses: Ilshidur/action-slack@2.0.1
         with:
           # The message to display in the Slack notification.
