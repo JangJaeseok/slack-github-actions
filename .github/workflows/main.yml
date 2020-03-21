@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Github Action for Slack
+      - name: Send message to Slack
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           #SLACK_USERNAME: ThisIsMyUsername # Optional. (defaults to webhook app)
@@ -17,4 +17,5 @@ jobs:
         with:
           # The message to display in the Slack notification.
           args: "A new commit has been pushed to ${{ github.repositoryUrl }}.\n
-                Commit ID => ${{ github.sha }}.\n"
+                Commit ID: ${{ github.sha }}.\n
+                Commit Log: ${{ toJson(github.event.commits) }}"
