@@ -7,18 +7,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: get commit message
-      - uses: actions/checkout@v2
-        run: echo ::set-env name=commitmsg::$(git log --format=%B -n 1 ${{ github.event.after }})
-      - env:
+      - name: Github Action for Slack
+        env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           #SLACK_USERNAME: ThisIsMyUsername # Optional. (defaults to webhook app)
           SLACK_CHANNEL: chatops-github # Optional. (defaults to webhook)
           #SLACK_AVATAR: repository # Optional. can be (repository, sender, an URL) (defaults to webhook app avatar)
-          REPOSITORY_URL: ${{ github.repositoryUrl }}
-          COMMIT_ID: ${{ github.sha }}
-          COMMIT_LOG: ${{ commitmsg }}
-      - uses: Ilshidur/action-slack@2.0.1
+        uses: Ilshidur/action-slack@2.0.1
         with:
           # The message to display in the Slack notification.
-          args: "A new commit has been pushed to ${{ REPOSITORY_URL }}\n Commit ID => ${{ COMMIT_ID }}\n Commit Log => ${{ COMMIT_LOG }}"
+          args: "A new commit has been pushed to ${{ github.repositoryUrl }}.\n
+                Commit ID => ${{ github.sha }}.\n"
